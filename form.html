@@ -6,380 +6,413 @@
   <title>Contact Us — DataLinkz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --accent: #7c5cfc;
-      --accent-light: #a78bfa;
-      --accent-glow: rgba(124, 92, 252, 0.35);
-      --surface: rgba(255, 255, 255, 0.04);
-      --surface-border: rgba(255, 255, 255, 0.07);
-      --surface-hover: rgba(255, 255, 255, 0.08);
-      --text: #f0f0f5;
-      --text-muted: #8b8b9e;
-      --text-dim: #56566a;
-      --danger: #f87171;
+      --bg: #060918;
+      --card: rgba(15, 18, 35, 0.85);
+      --card-border: rgba(255, 255, 255, 0.06);
+      --accent-1: #6366f1;
+      --accent-2: #06b6d4;
+      --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+      --text: #eef2ff;
+      --text-2: #94a3b8;
+      --text-3: #475569;
       --success: #34d399;
-      --radius: 16px;
+      --danger: #fb7185;
+      --input-bg: rgba(255, 255, 255, 0.03);
+      --input-border: rgba(255, 255, 255, 0.08);
+      --input-focus: #818cf8;
+      --glow: rgba(99, 102, 241, 0.25);
     }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-family: "Outfit", system-ui, sans-serif;
       min-height: 100vh;
+      background: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
-      background: #0a0a12;
-    }
-
-    /* ── Animated background ─────────────────── */
-    .bg {
-      position: fixed; inset: 0; z-index: 0;
-      background: #0a0a12;
-      overflow: hidden;
-    }
-
-    .bg .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.5;
-      animation: float 18s ease-in-out infinite alternate;
-    }
-
-    .bg .orb:nth-child(1) {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, #7c5cfc 0%, transparent 70%);
-      top: -15%; left: -10%;
-      animation-duration: 20s;
-    }
-
-    .bg .orb:nth-child(2) {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
-      bottom: -20%; right: -10%;
-      animation-duration: 24s;
-      animation-delay: -6s;
-    }
-
-    .bg .orb:nth-child(3) {
-      width: 350px; height: 350px;
-      background: radial-gradient(circle, #ec4899 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      animation-duration: 16s;
-      animation-delay: -3s;
-      opacity: 0.3;
-    }
-
-    @keyframes float {
-      0%   { transform: translate(0, 0) scale(1); }
-      50%  { transform: translate(40px, -30px) scale(1.08); }
-      100% { transform: translate(-20px, 20px) scale(0.95); }
-    }
-
-    /* ── Navigation ──────────────────────────── */
-    nav {
-      position: fixed;
-      top: 1.25rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
       display: flex;
-      gap: 0.25rem;
-      padding: 0.3rem;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-      animation: slideDown 0.5s ease-out both;
     }
 
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    /* ── Grid background ─────────────────────── */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
 
-    nav a {
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 0.55rem 1.2rem;
-      border-radius: 10px;
-      color: var(--text-muted);
-      transition: all 0.2s ease;
-    }
-
-    nav a:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    nav a.active {
-      color: #fff;
-      background: var(--accent);
-      box-shadow: 0 2px 12px var(--accent-glow);
-    }
-
-    /* ── Layout ──────────────────────────────── */
-    .page {
+    /* ── Split layout ────────────────────────── */
+    .split-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       z-index: 1;
-      min-height: 100vh;
-      display: flex;
+      padding: 2rem;
+    }
+
+    .brand-panel {
+      max-width: 380px;
+      animation: fadeIn 0.7s ease-out both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .brand-logo {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 5rem 1.5rem 2rem;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 460px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 24px;
-      padding: 2.75rem 2.25rem 2.25rem;
-      backdrop-filter: blur(30px);
-      box-shadow:
-        0 10px 50px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.03),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      animation: fadeUp 0.55s ease-out 0.15s both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Header ──────────────────────────────── */
-    .icon-circle {
-      width: 52px; height: 52px;
-      margin: 0 auto 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
-      box-shadow: 0 4px 20px var(--accent-glow);
-      font-size: 1.4rem;
-    }
-
-    h1 {
-      font-size: 1.6rem;
+      gap: 0.6rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      text-align: center;
-      margin-bottom: 0.35rem;
-      letter-spacing: -0.02em;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 0.88rem;
-      color: var(--text-muted);
+      letter-spacing: -0.03em;
       margin-bottom: 2rem;
     }
 
-    /* ── Form fields ─────────────────────────── */
+    .brand-logo .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 20px var(--glow);
+    }
+
+    .brand-panel h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .brand-panel h2 .gradient-text {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand-panel p {
+      font-size: 1rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      color: var(--text-2);
+    }
+
+    .feature-list .check {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-list .check svg {
+      width: 14px; height: 14px;
+      color: #818cf8;
+    }
+
+    .split-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+    }
+
+    /* ── Card ────────────────────────────────── */
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      backdrop-filter: blur(40px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.03);
+      animation: cardIn 0.6s ease-out 0.1s both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-accent {
+      height: 3px;
+      background: var(--accent-gradient);
+    }
+
+    .card-body {
+      padding: 2.25rem 2rem 2rem;
+    }
+
+    .card-body h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-body .hint {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Form ────────────────────────────────── */
     .field {
-      margin-bottom: 1.15rem;
+      margin-bottom: 1.1rem;
     }
 
     label {
       display: block;
       font-size: 0.78rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      color: var(--text-2);
       margin-bottom: 0.4rem;
     }
 
-    .input-wrap {
+    .input-group {
       position: relative;
-      display: flex;
-      align-items: center;
     }
 
-    .input-wrap .icon {
+    .input-group .ico {
       position: absolute;
-      left: 0.9rem;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
       width: 18px; height: 18px;
-      color: var(--text-dim);
+      color: var(--text-3);
       pointer-events: none;
-      transition: color 0.25s ease;
+      transition: color 0.2s;
     }
 
-    .input-wrap:focus-within .icon {
-      color: var(--accent-light);
+    .input-group:focus-within .ico {
+      color: var(--input-focus);
     }
 
-    input,
-    textarea {
+    input, textarea {
       width: 100%;
-      padding: 0.78rem 1rem 0.78rem 2.7rem;
+      padding: 0.72rem 0.9rem 0.72rem 2.6rem;
       font-family: inherit;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
       outline: none;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      transition: all 0.2s ease;
     }
 
     textarea {
-      padding-left: 1rem;
+      padding-left: 0.9rem;
       resize: vertical;
-      min-height: 110px;
+      min-height: 100px;
     }
 
-    input::placeholder,
-    textarea::placeholder {
-      color: var(--text-dim);
-    }
+    input::placeholder, textarea::placeholder { color: var(--text-3); }
 
-    input:focus,
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
-      background: rgba(255, 255, 255, 0.06);
+    input:focus, textarea:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1), 0 0 20px rgba(99, 102, 241, 0.06);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     /* ── Button ──────────────────────────────── */
-    button {
+    .btn {
       width: 100%;
-      padding: 0.85rem;
+      padding: 0.8rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
+      background: var(--accent-gradient);
+      background-size: 200% 100%;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 0.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.15s ease, box-shadow 0.25s ease;
+      margin-top: 0.4rem;
+      transition: transform 0.15s, box-shadow 0.3s, background-position 0.4s;
     }
 
-    button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    button:hover {
+    .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 24px var(--accent-glow);
+      box-shadow: 0 8px 30px var(--glow);
+      background-position: 100% 0;
     }
 
-    button:hover::before { opacity: 1; }
-    button:active { transform: translateY(0); }
+    .btn:active { transform: translateY(0); }
 
-    button:disabled {
+    .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
-    /* ── Status ──────────────────────────────── */
+    /* ── Message ─────────────────────────────── */
     #msg {
       text-align: center;
-      margin-top: 1.2rem;
-      font-size: 0.9rem;
+      margin-top: 1rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      min-height: 1.4em;
-      transition: opacity 0.3s ease;
+      min-height: 1.3em;
     }
 
     #msg.success { color: var(--success); }
     #msg.error   { color: var(--danger); }
 
-    /* ── Spinner ─────────────────────────────── */
     .spinner {
       display: inline-block;
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.25);
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,0.2);
       border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
       vertical-align: middle;
-      margin-right: 0.4rem;
+      margin-right: 0.35rem;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Nav link ────────────────────────────── */
+    .nav-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      color: var(--text-3);
+    }
+
+    .nav-link a {
+      color: #818cf8;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-link a:hover { color: #a5b4fc; }
+
     /* ── Responsive ──────────────────────────── */
-    @media (max-width: 520px) {
-      .card { padding: 2rem 1.25rem 1.75rem; border-radius: 20px; }
-      h1 { font-size: 1.4rem; }
-      nav { top: 0.75rem; }
-      nav a { font-size: 0.78rem; padding: 0.5rem 0.9rem; }
+    @media (max-width: 860px) {
+      body { flex-direction: column; }
+      .split-left { display: none; }
+      .split-right { min-height: 100vh; }
+    }
+
+    @media (max-width: 480px) {
+      .card-body { padding: 1.75rem 1.25rem 1.5rem; }
+      .card { border-radius: 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="bg">
-    <div class="orb"></div>
-    <div class="orb"></div>
-    <div class="orb"></div>
+
+  <div class="split-left">
+    <div class="brand-panel">
+      <div class="brand-logo">
+        <span class="logo-icon">⚡</span>
+        DataLinkz
+      </div>
+      <h2>Let's start a<br><span class="gradient-text">conversation</span></h2>
+      <p>Have a question or want to work together? Fill out the form and we'll get back to you within 24 hours.</p>
+      <ul class="feature-list">
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Quick response within 24 hours
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          No spam — your data stays private
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Direct line to our team
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <nav>
-    <a href="form.html" class="active">✉️ Contact</a>
-    <a href="view.html">📋 Submissions</a>
-  </nav>
-
-  <div class="page">
+  <div class="split-right">
     <div class="card">
-      <div class="icon-circle">✉️</div>
-      <h1>Get in touch</h1>
-      <p class="subtitle">We'd love to hear from you. Send us a message.</p>
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <h1>Get in touch</h1>
+        <p class="hint">We'd love to hear from you</p>
 
-      <form id="contact-form" novalidate>
-        <div class="field">
-          <label for="name">Full Name</label>
-          <div class="input-wrap">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <input type="text" id="name" name="name" placeholder="John Doe" required />
+        <form id="contact-form" novalidate>
+          <div class="field">
+            <label for="name">Full Name</label>
+            <div class="input-group">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="name" name="name" placeholder="John Doe" required />
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="email">Email Address</label>
-          <div class="input-wrap">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          <div class="field">
+            <label for="email">Email Address</label>
+            <div class="input-group">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required />
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="phone">Phone Number</label>
-          <div class="input-wrap">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <div class="input-group">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
-        </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
+          </div>
 
-        <button type="submit" id="send-btn">Send Message</button>
-      </form>
+          <button type="submit" class="btn" id="send-btn">Send Message →</button>
+        </form>
 
-      <p id="msg"></p>
+        <p id="msg"></p>
+
+        <p class="nav-link">
+          Already have access? <a href="login.html">Sign in</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -393,11 +426,7 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
+      if (!form.checkValidity()) { form.reportValidity(); return; }
 
       const data = {
         name: form.name.value.trim(),
@@ -417,7 +446,6 @@
           mode: "no-cors",
           body: JSON.stringify(data),
         });
-
         msg.textContent = "✓ Message sent — we'll be in touch!";
         msg.className = "success";
         form.reset();
@@ -426,7 +454,7 @@
         msg.className = "error";
       } finally {
         btn.disabled = false;
-        btn.textContent = "Send Message";
+        btn.textContent = "Send Message →";
       }
     });
   </script>

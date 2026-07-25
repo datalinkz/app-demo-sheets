@@ -6,319 +6,395 @@
   <title>Sign In — DataLinkz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --accent: #7c5cfc;
-      --accent-light: #a78bfa;
-      --accent-glow: rgba(124, 92, 252, 0.35);
-      --surface: rgba(255, 255, 255, 0.04);
-      --surface-border: rgba(255, 255, 255, 0.07);
-      --text: #f0f0f5;
-      --text-muted: #8b8b9e;
-      --text-dim: #56566a;
-      --danger: #f87171;
+      --bg: #060918;
+      --card: rgba(15, 18, 35, 0.85);
+      --card-border: rgba(255, 255, 255, 0.06);
+      --accent-1: #6366f1;
+      --accent-2: #06b6d4;
+      --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+      --text: #eef2ff;
+      --text-2: #94a3b8;
+      --text-3: #475569;
+      --danger: #fb7185;
+      --input-bg: rgba(255, 255, 255, 0.03);
+      --input-border: rgba(255, 255, 255, 0.08);
+      --input-focus: #818cf8;
+      --glow: rgba(99, 102, 241, 0.25);
     }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-family: "Outfit", system-ui, sans-serif;
       min-height: 100vh;
+      background: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
-      background: #0a0a12;
+      display: flex;
     }
 
-    /* ── Animated background ─────────────────── */
-    .bg {
+    /* ── Grid background ─────────────────────── */
+    body::before {
+      content: "";
       position: fixed; inset: 0; z-index: 0;
-      background: #0a0a12;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    /* ── Split layout ────────────────────────── */
+    .split-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
       overflow: hidden;
     }
 
-    .bg .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.5;
-      animation: float 18s ease-in-out infinite alternate;
+    .brand-panel {
+      max-width: 380px;
+      animation: fadeIn 0.7s ease-out both;
     }
 
-    .bg .orb:nth-child(1) {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, #7c5cfc 0%, transparent 70%);
-      top: -15%; left: -10%;
-      animation-duration: 20s;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
     }
 
-    .bg .orb:nth-child(2) {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
-      bottom: -20%; right: -10%;
-      animation-duration: 24s;
-      animation-delay: -6s;
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
     }
 
-    .bg .orb:nth-child(3) {
-      width: 350px; height: 350px;
-      background: radial-gradient(circle, #ec4899 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      animation-duration: 16s;
-      animation-delay: -3s;
-      opacity: 0.3;
+    .brand-logo .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 20px var(--glow);
     }
 
-    @keyframes float {
-      0%   { transform: translate(0, 0) scale(1); }
-      50%  { transform: translate(40px, -30px) scale(1.08); }
-      100% { transform: translate(-20px, 20px) scale(0.95); }
+    .brand-panel h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
     }
 
-    /* ── Layout ──────────────────────────────── */
-    .page {
+    .brand-panel h2 .gradient-text {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand-panel p {
+      font-size: 1rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      color: var(--text-2);
+    }
+
+    .feature-list .check {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-list .check svg {
+      width: 14px; height: 14px;
+      color: #818cf8;
+    }
+
+    .split-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1.5rem;
+      padding: 2rem;
     }
 
+    /* ── Card ────────────────────────────────── */
     .card {
       width: 100%;
-      max-width: 420px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 24px;
-      padding: 2.75rem 2.25rem 2.25rem;
-      backdrop-filter: blur(30px);
-      box-shadow:
-        0 10px 50px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.03),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      animation: fadeUp 0.55s ease-out 0.1s both;
+      max-width: 400px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      backdrop-filter: blur(40px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.03);
+      animation: cardIn 0.6s ease-out 0.1s both;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ── Header ──────────────────────────────── */
-    .icon-circle {
-      width: 56px; height: 56px;
-      margin: 0 auto 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 18px;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
-      box-shadow: 0 4px 24px var(--accent-glow);
+    .card-accent {
+      height: 3px;
+      background: var(--accent-gradient);
+    }
+
+    .card-body {
+      padding: 2.25rem 2rem 2rem;
+    }
+
+    .card-body h1 {
       font-size: 1.5rem;
-    }
-
-    h1 {
-      font-size: 1.6rem;
       font-weight: 800;
-      text-align: center;
-      margin-bottom: 0.3rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.25rem;
     }
 
-    .subtitle {
-      text-align: center;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
+    .card-body .hint {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 1.75rem;
     }
 
     /* ── Form ────────────────────────────────── */
     .field {
-      margin-bottom: 1.15rem;
+      margin-bottom: 1.1rem;
     }
 
     label {
       display: block;
       font-size: 0.78rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      color: var(--text-2);
       margin-bottom: 0.4rem;
     }
 
-    .input-wrap {
+    .input-group {
       position: relative;
-      display: flex;
-      align-items: center;
     }
 
-    .input-wrap .icon {
+    .input-group .ico {
       position: absolute;
-      left: 0.9rem;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
       width: 18px; height: 18px;
-      color: var(--text-dim);
+      color: var(--text-3);
       pointer-events: none;
-      transition: color 0.25s ease;
+      transition: color 0.2s;
     }
 
-    .input-wrap:focus-within .icon {
-      color: var(--accent-light);
+    .input-group:focus-within .ico {
+      color: var(--input-focus);
     }
 
     input {
       width: 100%;
-      padding: 0.78rem 1rem 0.78rem 2.7rem;
+      padding: 0.72rem 0.9rem 0.72rem 2.6rem;
       font-family: inherit;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
       outline: none;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      transition: all 0.2s ease;
     }
 
-    input::placeholder { color: var(--text-dim); }
+    input::placeholder { color: var(--text-3); }
 
     input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
-      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1), 0 0 20px rgba(99, 102, 241, 0.06);
+      background: rgba(255, 255, 255, 0.05);
     }
 
-    /* ── Toggle password visibility ──────────── */
     .toggle-pw {
       position: absolute;
-      right: 0.7rem;
+      right: 0.6rem;
+      top: 50%;
+      transform: translateY(-50%);
       background: none;
       border: none;
-      color: var(--text-dim);
+      color: var(--text-3);
       cursor: pointer;
-      padding: 0.3rem;
+      padding: 0.25rem;
       display: flex;
-      transition: color 0.2s ease;
+      transition: color 0.2s;
     }
 
-    .toggle-pw:hover { color: var(--text-muted); }
+    .toggle-pw:hover { color: var(--text-2); }
     .toggle-pw svg { width: 18px; height: 18px; }
 
     /* ── Button ──────────────────────────────── */
-    .btn-primary {
+    .btn {
       width: 100%;
-      padding: 0.85rem;
+      padding: 0.8rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
+      background: var(--accent-gradient);
+      background-size: 200% 100%;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
       position: relative;
-      overflow: hidden;
-      transition: transform 0.15s ease, box-shadow 0.25s ease;
+      transition: transform 0.15s, box-shadow 0.3s, background-position 0.4s;
     }
 
-    .btn-primary::before {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    .btn-primary:hover {
+    .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 24px var(--accent-glow);
+      box-shadow: 0 8px 30px var(--glow);
+      background-position: 100% 0;
     }
 
-    .btn-primary:hover::before { opacity: 1; }
-    .btn-primary:active { transform: translateY(0); }
+    .btn:active { transform: translateY(0); }
 
-    .btn-primary:disabled {
+    .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
-    /* ── Status ──────────────────────────────── */
+    /* ── Message ─────────────────────────────── */
     #msg {
       text-align: center;
-      margin-top: 1.2rem;
-      font-size: 0.88rem;
+      margin-top: 1rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      min-height: 1.4em;
+      min-height: 1.3em;
       color: var(--danger);
-      transition: opacity 0.3s ease;
     }
 
     /* ── Spinner ─────────────────────────────── */
     .spinner {
       display: inline-block;
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.25);
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,0.2);
       border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
       vertical-align: middle;
-      margin-right: 0.4rem;
+      margin-right: 0.35rem;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── Responsive ──────────────────────────── */
-    @media (max-width: 520px) {
-      .card { padding: 2rem 1.25rem 1.75rem; border-radius: 20px; }
-      h1 { font-size: 1.4rem; }
+    @media (max-width: 860px) {
+      body { flex-direction: column; }
+      .split-left { display: none; }
+      .split-right { min-height: 100vh; }
+    }
+
+    @media (max-width: 480px) {
+      .card-body { padding: 1.75rem 1.25rem 1.5rem; }
+      .card { border-radius: 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="bg">
-    <div class="orb"></div>
-    <div class="orb"></div>
-    <div class="orb"></div>
+
+  <!-- Left branding panel (hidden on mobile) -->
+  <div class="split-left">
+    <div class="brand-panel">
+      <div class="brand-logo">
+        <span class="logo-icon">⚡</span>
+        DataLinkz
+      </div>
+      <h2>Welcome back to<br><span class="gradient-text">your dashboard</span></h2>
+      <p>Sign in to access your contact submissions, manage responses, and track engagement.</p>
+      <ul class="feature-list">
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Real-time submission tracking
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Instant search &amp; filtering
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Secure token-based access
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <div class="page">
+  <!-- Right form panel -->
+  <div class="split-right">
     <div class="card">
-      <div class="icon-circle">🔐</div>
-      <h1>Sign in</h1>
-      <p class="subtitle">Enter your credentials to continue.</p>
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <h1>Sign in</h1>
+        <p class="hint">Enter your credentials to continue</p>
 
-      <form id="login-form" novalidate>
-        <div class="field">
-          <label for="username">Username</label>
-          <div class="input-wrap">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <input type="text" id="username" name="username" placeholder="Your username" required autocomplete="username" />
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="username">Username</label>
+            <div class="input-group">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="username" name="username" placeholder="Your username" required autocomplete="username" />
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="password">Password</label>
-          <div class="input-wrap">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
-            <button type="button" class="toggle-pw" id="toggle-pw" tabindex="-1" aria-label="Toggle password visibility">
-              <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-            </button>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-group">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+              <button type="button" class="toggle-pw" id="toggle-pw" tabindex="-1">
+                <svg id="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg id="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <button type="submit" class="btn-primary" id="sign-in-btn">Sign in</button>
-      </form>
+          <button type="submit" class="btn" id="sign-in-btn">Sign in →</button>
+        </form>
 
-      <p id="msg"></p>
+        <p id="msg"></p>
+      </div>
     </div>
   </div>
 
@@ -326,34 +402,26 @@
     const APPS_SCRIPT_URL =
       "https://script.google.com/macros/s/AKfycbw-ZTgEnBZVolf729LJA0AcuT8YtqU5At3-LPhXmj7Zoye_C6GSGqZWDEMTDNkFyH93Aw/exec";
 
-    // If already logged in, skip to view
-    if (localStorage.getItem("token")) {
-      location.replace("view.html");
-    }
+    if (localStorage.getItem("token")) location.replace("view.html");
 
     const form = document.getElementById("login-form");
     const btn  = document.getElementById("sign-in-btn");
     const msg  = document.getElementById("msg");
-    const pwInput  = document.getElementById("password");
-    const togglePw = document.getElementById("toggle-pw");
-    const eyeOpen  = document.getElementById("eye-open");
-    const eyeClosed = document.getElementById("eye-closed");
+    const pw   = document.getElementById("password");
+    const tog  = document.getElementById("toggle-pw");
+    const eyeOn  = document.getElementById("eye-on");
+    const eyeOff = document.getElementById("eye-off");
 
-    // Toggle password visibility
-    togglePw.addEventListener("click", () => {
-      const showing = pwInput.type === "text";
-      pwInput.type = showing ? "password" : "text";
-      eyeOpen.style.display   = showing ? "" : "none";
-      eyeClosed.style.display = showing ? "none" : "";
+    tog.addEventListener("click", () => {
+      const show = pw.type === "password";
+      pw.type = show ? "text" : "password";
+      eyeOn.style.display  = show ? "none" : "";
+      eyeOff.style.display = show ? "" : "none";
     });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
+      if (!form.checkValidity()) { form.reportValidity(); return; }
 
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner"></span>Signing in…';
@@ -365,7 +433,6 @@
           username: form.username.value,
           password: form.password.value,
         });
-
         const res  = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
         const data = await res.json();
 
@@ -379,7 +446,7 @@
         msg.textContent = "Connection error — please try again.";
       } finally {
         btn.disabled = false;
-        btn.textContent = "Sign in";
+        btn.textContent = "Sign in →";
       }
     });
   </script>
