@@ -23,8 +23,6 @@
       --text-muted: #8b8b9e;
       --text-dim: #56566a;
       --danger: #f87171;
-      --success: #34d399;
-      --radius: 16px;
     }
 
     body {
@@ -81,14 +79,15 @@
       100% { transform: translate(-20px, 20px) scale(0.95); }
     }
 
-    /* ── Navigation ──────────────────────────── */
-    nav {
+    /* ── Top bar ─────────────────────────────── */
+    .topbar {
       position: fixed;
       top: 1.25rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
       display: flex;
+      align-items: center;
       gap: 0.25rem;
       padding: 0.3rem;
       background: rgba(255, 255, 255, 0.06);
@@ -104,25 +103,38 @@
       to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    nav a {
+    .topbar a, .topbar button {
       text-decoration: none;
+      font-family: inherit;
       font-size: 0.82rem;
       font-weight: 600;
       padding: 0.55rem 1.2rem;
       border-radius: 10px;
       color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    nav a:hover {
+    .topbar a:hover, .topbar button:hover {
       color: var(--text);
       background: rgba(255, 255, 255, 0.06);
     }
 
-    nav a.active {
+    .topbar a.active {
       color: #fff;
       background: var(--accent);
       box-shadow: 0 2px 12px var(--accent-glow);
+    }
+
+    .topbar .logout-btn {
+      color: #f87171;
+    }
+
+    .topbar .logout-btn:hover {
+      background: rgba(248, 113, 113, 0.1);
+      color: #fca5a5;
     }
 
     /* ── Layout ──────────────────────────────── */
@@ -208,7 +220,7 @@
       color: var(--text-dim);
     }
 
-    /* ── Search / filter bar ─────────────────── */
+    /* ── Toolbar ─────────────────────────────── */
     .toolbar {
       display: flex;
       align-items: center;
@@ -271,9 +283,7 @@
       background: var(--surface-hover);
     }
 
-    .refresh-btn svg {
-      width: 18px; height: 18px;
-    }
+    .refresh-btn svg { width: 18px; height: 18px; }
 
     .refresh-btn.spinning svg {
       animation: spin 0.8s linear infinite;
@@ -327,10 +337,7 @@
       text-transform: uppercase;
     }
 
-    .contact-info {
-      flex: 1;
-      min-width: 0;
-    }
+    .contact-info { flex: 1; min-width: 0; }
 
     .contact-name {
       font-weight: 700;
@@ -444,7 +451,6 @@
     .skeleton-line.w40 { width: 40%; }
     .skeleton-line.w60 { width: 60%; }
     .skeleton-line.w80 { width: 80%; }
-    .skeleton-line.w90 { width: 90%; }
     .skeleton-line:last-child { margin-bottom: 0; }
 
     .skeleton-body {
@@ -462,13 +468,12 @@
     @media (max-width: 520px) {
       .page { padding: 5rem 1rem 2rem; }
       .page-header h1 { font-size: 1.5rem; }
-      nav { top: 0.75rem; }
-      nav a { font-size: 0.78rem; padding: 0.5rem 0.9rem; }
+      .topbar { top: 0.75rem; }
+      .topbar a, .topbar button { font-size: 0.78rem; padding: 0.5rem 0.9rem; }
       .stats { gap: 0.5rem; }
       .stat-card { padding: 0.75rem 0.6rem; }
       .stat-card .stat-value { font-size: 1.25rem; }
       #list li { padding: 1rem 1.1rem; }
-      .contact-top { gap: 0.6rem; }
     }
   </style>
 </head>
@@ -479,10 +484,11 @@
     <div class="orb"></div>
   </div>
 
-  <nav>
+  <div class="topbar">
     <a href="form.html">✉️ Contact</a>
     <a href="view.html" class="active">📋 Submissions</a>
-  </nav>
+    <button class="logout-btn" id="logout-btn">🚪 Log out</button>
+  </div>
 
   <div class="page">
     <div class="container">
@@ -492,7 +498,6 @@
         <p class="subtitle" id="subtitle">Loading submissions…</p>
       </div>
 
-      <!-- Stats row (populated by JS) -->
       <div class="stats" id="stats" style="display: none;">
         <div class="stat-card">
           <div class="stat-value" id="stat-total">0</div>
@@ -508,7 +513,6 @@
         </div>
       </div>
 
-      <!-- Toolbar -->
       <div class="toolbar" id="toolbar" style="display: none;">
         <div class="search-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -519,7 +523,6 @@
         </button>
       </div>
 
-      <!-- Skeleton loader -->
       <div id="skeleton">
         <div class="skeleton-card">
           <div class="skeleton-row">
@@ -561,16 +564,31 @@
     const APPS_SCRIPT_URL =
       "https://script.google.com/macros/s/AKfycbw-ZTgEnBZVolf729LJA0AcuT8YtqU5At3-LPhXmj7Zoye_C6GSGqZWDEMTDNkFyH93Aw/exec";
 
-    const list      = document.getElementById("list");
-    const subtitle  = document.getElementById("subtitle");
-    const skeleton  = document.getElementById("skeleton");
-    const statsEl   = document.getElementById("stats");
-    const toolbar   = document.getElementById("toolbar");
-    const searchIn  = document.getElementById("search");
+    // ── Auth gate ───────────────────────────────
+    const token = localStorage.getItem("token");
+    if (!token) {
+      location.replace("login.html");
+    }
+
+    // ── DOM refs ────────────────────────────────
+    const list       = document.getElementById("list");
+    const subtitle   = document.getElementById("subtitle");
+    const skeleton   = document.getElementById("skeleton");
+    const statsEl    = document.getElementById("stats");
+    const toolbar    = document.getElementById("toolbar");
+    const searchIn   = document.getElementById("search");
     const refreshBtn = document.getElementById("refresh-btn");
+    const logoutBtn  = document.getElementById("logout-btn");
 
     let allContacts = [];
 
+    // ── Log out ─────────────────────────────────
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("token");
+      location.replace("login.html");
+    });
+
+    // ── Load contacts ───────────────────────────
     async function loadContacts() {
       skeleton.style.display = "";
       list.innerHTML = "";
@@ -580,13 +598,21 @@
       refreshBtn.classList.add("spinning");
 
       try {
-        const res  = await fetch(APPS_SCRIPT_URL);
+        const params = new URLSearchParams({ action: "getContacts", token });
+        const res  = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
         const data = await res.json();
 
         skeleton.style.display = "none";
         refreshBtn.classList.remove("spinning");
 
-        if (!data.ok || !data.contacts || data.contacts.length === 0) {
+        // Invalid / expired token → back to login
+        if (!data.ok) {
+          localStorage.removeItem("token");
+          location.replace("login.html");
+          return;
+        }
+
+        if (!data.contacts || data.contacts.length === 0) {
           subtitle.textContent = "Nothing here yet";
           list.innerHTML = `
             <div class="status">
@@ -600,7 +626,6 @@
         allContacts = data.contacts;
         subtitle.textContent = `${allContacts.length} message${allContacts.length !== 1 ? "s" : ""} received`;
 
-        // Stats
         updateStats(allContacts);
         statsEl.style.display = "flex";
         toolbar.style.display = "flex";
@@ -619,6 +644,7 @@
       }
     }
 
+    // ── Stats ───────────────────────────────────
     function updateStats(contacts) {
       const now   = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -639,6 +665,7 @@
       document.getElementById("stat-week").textContent   = weekCount;
     }
 
+    // ── Render ──────────────────────────────────
     function renderContacts(contacts) {
       list.innerHTML = "";
 
@@ -679,7 +706,7 @@
               </div>
             </div>
           </div>
-          <div class="contact-message">${esc(c.message)}</div>
+          <p class="contact-message">${esc(c.message)}</p>
           ${dateStr ? `<span class="contact-date">${dateStr}</span>` : ""}
         `;
 
@@ -687,7 +714,7 @@
       });
     }
 
-    // Search filter
+    // ── Search ──────────────────────────────────
     searchIn.addEventListener("input", () => {
       const q = searchIn.value.toLowerCase().trim();
       if (!q) { renderContacts(allContacts); return; }
@@ -700,7 +727,7 @@
       renderContacts(filtered);
     });
 
-    // Refresh button
+    // ── Refresh ─────────────────────────────────
     refreshBtn.addEventListener("click", () => {
       searchIn.value = "";
       loadContacts();
@@ -713,7 +740,7 @@
       return d.innerHTML;
     }
 
-    // Initial load
+    // ── Go ──────────────────────────────────────
     loadContacts();
   </script>
 </body>

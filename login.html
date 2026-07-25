@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — DataLinkz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --accent: #7c5cfc;
+      --accent-light: #a78bfa;
+      --accent-glow: rgba(124, 92, 252, 0.35);
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-border: rgba(255, 255, 255, 0.07);
+      --text: #f0f0f5;
+      --text-muted: #8b8b9e;
+      --text-dim: #56566a;
+      --danger: #f87171;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+      background: #0a0a12;
+    }
+
+    /* ── Animated background ─────────────────── */
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: #0a0a12;
+      overflow: hidden;
+    }
+
+    .bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+      animation: float 18s ease-in-out infinite alternate;
+    }
+
+    .bg .orb:nth-child(1) {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #7c5cfc 0%, transparent 70%);
+      top: -15%; left: -10%;
+      animation-duration: 20s;
+    }
+
+    .bg .orb:nth-child(2) {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+      bottom: -20%; right: -10%;
+      animation-duration: 24s;
+      animation-delay: -6s;
+    }
+
+    .bg .orb:nth-child(3) {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-duration: 16s;
+      animation-delay: -3s;
+      opacity: 0.3;
+    }
+
+    @keyframes float {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(40px, -30px) scale(1.08); }
+      100% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* ── Layout ──────────────────────────────── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 2.75rem 2.25rem 2.25rem;
+      backdrop-filter: blur(30px);
+      box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: fadeUp 0.55s ease-out 0.1s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Header ──────────────────────────────── */
+    .icon-circle {
+      width: 56px; height: 56px;
+      margin: 0 auto 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      box-shadow: 0 4px 24px var(--accent-glow);
+      font-size: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* ── Form ────────────────────────────────── */
+    .field {
+      margin-bottom: 1.15rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap .icon {
+      position: absolute;
+      left: 0.9rem;
+      width: 18px; height: 18px;
+      color: var(--text-dim);
+      pointer-events: none;
+      transition: color 0.25s ease;
+    }
+
+    .input-wrap:focus-within .icon {
+      color: var(--accent-light);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.78rem 1rem 0.78rem 2.7rem;
+      font-family: inherit;
+      font-size: 0.92rem;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    input::placeholder { color: var(--text-dim); }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* ── Toggle password visibility ──────────── */
+    .toggle-pw {
+      position: absolute;
+      right: 0.7rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0.3rem;
+      display: flex;
+      transition: color 0.2s ease;
+    }
+
+    .toggle-pw:hover { color: var(--text-muted); }
+    .toggle-pw svg { width: 18px; height: 18px; }
+
+    /* ── Button ──────────────────────────────── */
+    .btn-primary {
+      width: 100%;
+      padding: 0.85rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-primary::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--accent-glow);
+    }
+
+    .btn-primary:hover::before { opacity: 1; }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ── Status ──────────────────────────────── */
+    #msg {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      min-height: 1.4em;
+      color: var(--danger);
+      transition: opacity 0.3s ease;
+    }
+
+    /* ── Spinner ─────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.25);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Responsive ──────────────────────────── */
+    @media (max-width: 520px) {
+      .card { padding: 2rem 1.25rem 1.75rem; border-radius: 20px; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <div class="page">
+    <div class="card">
+      <div class="icon-circle">🔐</div>
+      <h1>Sign in</h1>
+      <p class="subtitle">Enter your credentials to continue.</p>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="username">Username</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="username" name="username" placeholder="Your username" required autocomplete="username" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+            <button type="button" class="toggle-pw" id="toggle-pw" tabindex="-1" aria-label="Toggle password visibility">
+              <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="sign-in-btn">Sign in</button>
+      </form>
+
+      <p id="msg"></p>
+    </div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbw-ZTgEnBZVolf729LJA0AcuT8YtqU5At3-LPhXmj7Zoye_C6GSGqZWDEMTDNkFyH93Aw/exec";
+
+    // If already logged in, skip to view
+    if (localStorage.getItem("token")) {
+      location.replace("view.html");
+    }
+
+    const form = document.getElementById("login-form");
+    const btn  = document.getElementById("sign-in-btn");
+    const msg  = document.getElementById("msg");
+    const pwInput  = document.getElementById("password");
+    const togglePw = document.getElementById("toggle-pw");
+    const eyeOpen  = document.getElementById("eye-open");
+    const eyeClosed = document.getElementById("eye-closed");
+
+    // Toggle password visibility
+    togglePw.addEventListener("click", () => {
+      const showing = pwInput.type === "text";
+      pwInput.type = showing ? "password" : "text";
+      eyeOpen.style.display   = showing ? "" : "none";
+      eyeClosed.style.display = showing ? "none" : "";
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Signing in…';
+      msg.textContent = "";
+
+      try {
+        const params = new URLSearchParams({
+          action: "login",
+          username: form.username.value,
+          password: form.password.value,
+        });
+
+        const res  = await fetch(APPS_SCRIPT_URL + "?" + params.toString());
+        const data = await res.json();
+
+        if (data.ok) {
+          localStorage.setItem("token", data.token);
+          location.replace("view.html");
+        } else {
+          msg.textContent = data.error || "Invalid credentials";
+        }
+      } catch {
+        msg.textContent = "Connection error — please try again.";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Sign in";
+      }
+    });
+  </script>
+</body>
+</html>
