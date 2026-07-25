@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Submissions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0c29 0%, #1a1a40 40%, #24243e 100%);
+      color: #e4e4e7;
+      padding: 2rem 1.5rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #a78bfa, #818cf8, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeUp 0.5s ease-out both;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #71717a;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.5s ease-out 0.05s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── List ─────────────────────────────────── */
+    #list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #list li {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.4rem 1.5rem;
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: fadeUp 0.45s ease-out both;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    #list li:hover {
+      border-color: rgba(129, 140, 248, 0.25);
+      box-shadow:
+        0 6px 28px rgba(99, 102, 241, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .contact-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.4rem 0.65rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .contact-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #f4f4f5;
+    }
+
+    .contact-email {
+      font-size: 0.85rem;
+      color: #a1a1aa;
+    }
+
+    .contact-phone {
+      font-size: 0.85rem;
+      color: #818cf8;
+      font-weight: 500;
+    }
+
+    .contact-message {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: #d4d4d8;
+      margin-bottom: 0.6rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .contact-date {
+      font-size: 0.75rem;
+      color: #52525b;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Status messages ──────────────────────── */
+    .status {
+      text-align: center;
+      padding: 3rem 1rem;
+      animation: fadeUp 0.5s ease-out both;
+    }
+
+    .status-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .status-text {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .status-text.empty {
+      color: #71717a;
+    }
+
+    .status-text.error {
+      color: #f87171;
+    }
+
+    /* ── Loading skeleton ─────────────────────── */
+    .skeleton {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skeleton-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 1.4rem 1.5rem;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .skeleton-line {
+      height: 0.75rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      margin-bottom: 0.65rem;
+    }
+
+    .skeleton-line.short  { width: 40%; }
+    .skeleton-line.medium { width: 65%; }
+    .skeleton-line.long   { width: 90%; }
+    .skeleton-line:last-child { margin-bottom: 0; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.45; }
+    }
+
+    /* ── Back link ────────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #818cf8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.75rem;
+      transition: color 0.2s ease;
+      animation: fadeUp 0.4s ease-out both;
+    }
+
+    .back-link:hover {
+      color: #a78bfa;
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── Badge ─────────────────────────────────── */
+    .count-badge {
+      display: inline-block;
+      background: rgba(129, 140, 248, 0.15);
+      color: #818cf8;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 99px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* ── Responsive ───────────────────────────── */
+    @media (max-width: 520px) {
+      body {
+        padding: 1.25rem 1rem;
+      }
+
+      h1 {
+        font-size: 1.55rem;
+      }
+
+      #list li {
+        padding: 1.1rem 1.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="form.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Back to form
+    </a>
+
+    <h1>All submissions</h1>
+    <p class="subtitle" id="subtitle">Loading submissions…</p>
+
+    <!-- skeleton loader shown while fetching -->
+    <div class="skeleton" id="skeleton">
+      <div class="skeleton-card">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line medium"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line medium"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line medium"></div>
+      </div>
+    </div>
+
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbw-ZTgEnBZVolf729LJA0AcuT8YtqU5At3-LPhXmj7Zoye_C6GSGqZWDEMTDNkFyH93Aw/exec";
+
+    const list     = document.getElementById("list");
+    const subtitle = document.getElementById("subtitle");
+    const skeleton = document.getElementById("skeleton");
+
+    (async () => {
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL);
+        const data = await res.json();
+
+        skeleton.remove();
+
+        if (!data.ok || !data.contacts || data.contacts.length === 0) {
+          subtitle.textContent = "Nothing here yet";
+          list.innerHTML = `
+            <div class="status">
+              <div class="status-icon">📭</div>
+              <div class="status-text empty">No submissions yet</div>
+            </div>`;
+          return;
+        }
+
+        subtitle.innerHTML =
+          `Showing all messages <span class="count-badge">${data.contacts.length}</span>`;
+
+        data.contacts.forEach((c, i) => {
+          const li = document.createElement("li");
+          li.style.animationDelay = `${i * 0.06}s`;
+
+          const dateStr = c.created_at
+            ? new Date(c.created_at).toLocaleString()
+            : "";
+
+          li.innerHTML = `
+            <div class="contact-header">
+              <span class="contact-name">${esc(c.name)}</span>
+              <span class="contact-email">(${esc(c.email)})</span>
+              ${c.phone ? `<span class="contact-phone">📞 ${esc(c.phone)}</span>` : ""}
+            </div>
+            <p class="contact-message">${esc(c.message)}</p>
+            ${dateStr ? `<span class="contact-date">${dateStr}</span>` : ""}
+          `;
+
+          list.appendChild(li);
+        });
+      } catch (err) {
+        skeleton.remove();
+        subtitle.textContent = "";
+        list.innerHTML = `
+          <div class="status">
+            <div class="status-icon">⚠️</div>
+            <div class="status-text error">Couldn't load — try again later</div>
+          </div>`;
+      }
+    })();
+
+    /** Simple HTML-escape to prevent XSS */
+    function esc(str) {
+      const d = document.createElement("div");
+      d.textContent = str ?? "";
+      return d.innerHTML;
+    }
+  </script>
+</body>
+</html>
