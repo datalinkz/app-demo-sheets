@@ -208,6 +208,11 @@
       </div>
 
       <div class="field">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+      </div>
+
+      <div class="field">
         <label for="message">Message</label>
         <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
       </div>
@@ -238,6 +243,7 @@
       const data = {
         name: form.name.value.trim(),
         email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
         message: form.message.value.trim(),
       };
 
