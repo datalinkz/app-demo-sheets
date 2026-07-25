@@ -3,170 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us</title>
+  <title>Contact Us — DataLinkz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --accent: #7c5cfc;
+      --accent-light: #a78bfa;
+      --accent-glow: rgba(124, 92, 252, 0.35);
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-border: rgba(255, 255, 255, 0.07);
+      --surface-hover: rgba(255, 255, 255, 0.08);
+      --text: #f0f0f5;
+      --text-muted: #8b8b9e;
+      --text-dim: #56566a;
+      --danger: #f87171;
+      --success: #34d399;
+      --radius: 16px;
     }
 
     body {
       font-family: "Inter", system-ui, -apple-system, sans-serif;
       min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+      background: #0a0a12;
+    }
+
+    /* ── Animated background ─────────────────── */
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: #0a0a12;
+      overflow: hidden;
+    }
+
+    .bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+      animation: float 18s ease-in-out infinite alternate;
+    }
+
+    .bg .orb:nth-child(1) {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #7c5cfc 0%, transparent 70%);
+      top: -15%; left: -10%;
+      animation-duration: 20s;
+    }
+
+    .bg .orb:nth-child(2) {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+      bottom: -20%; right: -10%;
+      animation-duration: 24s;
+      animation-delay: -6s;
+    }
+
+    .bg .orb:nth-child(3) {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-duration: 16s;
+      animation-delay: -3s;
+      opacity: 0.3;
+    }
+
+    @keyframes float {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(40px, -30px) scale(1.08); }
+      100% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* ── Navigation ──────────────────────────── */
+    nav {
+      position: fixed;
+      top: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 0.25rem;
+      padding: 0.3rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      animation: slideDown 0.5s ease-out both;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1.2rem;
+      border-radius: 10px;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    nav a.active {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 2px 12px var(--accent-glow);
+    }
+
+    /* ── Layout ──────────────────────────────── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #0f0c29 0%, #1a1a40 40%, #24243e 100%);
-      color: #e4e4e7;
-      padding: 1.5rem;
+      padding: 5rem 1.5rem 2rem;
     }
 
     .card {
       width: 100%;
-      max-width: 480px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 2.5rem 2rem;
-      backdrop-filter: blur(24px);
+      max-width: 460px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 2.75rem 2.25rem 2.25rem;
+      backdrop-filter: blur(30px);
       box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      animation: fadeUp 0.6s ease-out both;
+        0 10px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: fadeUp 0.55s ease-out 0.15s both;
     }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Header ──────────────────────────────── */
+    .icon-circle {
+      width: 52px; height: 52px;
+      margin: 0 auto 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      box-shadow: 0 4px 20px var(--accent-glow);
+      font-size: 1.4rem;
     }
 
     h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 1.6rem;
+      font-weight: 800;
       text-align: center;
-      margin-bottom: 0.4rem;
-      background: linear-gradient(135deg, #a78bfa, #818cf8, #6366f1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
     }
 
     .subtitle {
       text-align: center;
-      font-size: 0.9rem;
-      color: #a1a1aa;
+      font-size: 0.88rem;
+      color: var(--text-muted);
       margin-bottom: 2rem;
     }
 
+    /* ── Form fields ─────────────────────────── */
     .field {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
     }
 
     label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #a1a1aa;
-      margin-bottom: 0.45rem;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap .icon {
+      position: absolute;
+      left: 0.9rem;
+      width: 18px; height: 18px;
+      color: var(--text-dim);
+      pointer-events: none;
+      transition: color 0.25s ease;
+    }
+
+    .input-wrap:focus-within .icon {
+      color: var(--accent-light);
     }
 
     input,
     textarea {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.78rem 1rem 0.78rem 2.7rem;
       font-family: inherit;
-      font-size: 0.95rem;
-      color: #f4f4f5;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
+      font-size: 0.92rem;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
       outline: none;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    textarea {
+      padding-left: 1rem;
+      resize: vertical;
+      min-height: 110px;
     }
 
     input::placeholder,
     textarea::placeholder {
-      color: #52525b;
+      color: var(--text-dim);
     }
 
     input:focus,
     textarea:focus {
-      border-color: #818cf8;
-      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.18);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
+    /* ── Button ──────────────────────────────── */
     button {
       width: 100%;
       padding: 0.85rem;
       font-family: inherit;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      background: linear-gradient(135deg, var(--accent), #6366f1);
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-      margin-top: 0.25rem;
+      margin-top: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.25s ease;
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
 
     button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--accent-glow);
     }
 
-    button:active {
-      transform: translateY(0);
-    }
+    button:hover::before { opacity: 1; }
+    button:active { transform: translateY(0); }
 
     button:disabled {
-      opacity: 0.55;
+      opacity: 0.5;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
+    /* ── Status ──────────────────────────────── */
     #msg {
       text-align: center;
-      margin-top: 1.25rem;
-      font-size: 0.95rem;
-      font-weight: 500;
+      margin-top: 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
       min-height: 1.4em;
       transition: opacity 0.3s ease;
     }
 
-    #msg.success {
-      color: #34d399;
-    }
+    #msg.success { color: var(--success); }
+    #msg.error   { color: var(--danger); }
 
-    #msg.error {
-      color: #f87171;
-    }
-
+    /* ── Spinner ─────────────────────────────── */
     .spinner {
       display: inline-block;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255, 255, 255, 0.25);
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.25);
       border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
@@ -174,53 +317,70 @@
       margin-right: 0.4rem;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Responsive ──────────────────────────── */
     @media (max-width: 520px) {
-      .card {
-        padding: 2rem 1.25rem;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
+      .card { padding: 2rem 1.25rem 1.75rem; border-radius: 20px; }
+      h1 { font-size: 1.4rem; }
+      nav { top: 0.75rem; }
+      nav a { font-size: 0.78rem; padding: 0.5rem 0.9rem; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Contact us</h1>
-    <p class="subtitle">We'd love to hear from you. Drop us a message below.</p>
+  <div class="bg">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
 
-    <form id="contact-form" novalidate>
-      <div class="field">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your full name" required />
-      </div>
+  <nav>
+    <a href="form.html" class="active">✉️ Contact</a>
+    <a href="view.html">📋 Submissions</a>
+  </nav>
 
-      <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required />
-      </div>
+  <div class="page">
+    <div class="card">
+      <div class="icon-circle">✉️</div>
+      <h1>Get in touch</h1>
+      <p class="subtitle">We'd love to hear from you. Send us a message.</p>
 
-      <div class="field">
-        <label for="phone">Phone</label>
-        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
-      </div>
+      <form id="contact-form" novalidate>
+        <div class="field">
+          <label for="name">Full Name</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="name" name="name" placeholder="John Doe" required />
+          </div>
+        </div>
 
-      <div class="field">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
-      </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+        </div>
 
-      <button type="submit" id="send-btn">Send</button>
-    </form>
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+          </div>
+        </div>
 
-    <p id="msg"></p>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
+        </div>
+
+        <button type="submit" id="send-btn">Send Message</button>
+      </form>
+
+      <p id="msg"></p>
+    </div>
   </div>
 
   <script>
@@ -228,13 +388,12 @@
       "https://script.google.com/macros/s/AKfycbw-ZTgEnBZVolf729LJA0AcuT8YtqU5At3-LPhXmj7Zoye_C6GSGqZWDEMTDNkFyH93Aw/exec";
 
     const form = document.getElementById("contact-form");
-    const btn = document.getElementById("send-btn");
-    const msg = document.getElementById("msg");
+    const btn  = document.getElementById("send-btn");
+    const msg  = document.getElementById("msg");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Basic validation
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
@@ -247,7 +406,6 @@
         message: form.message.value.trim(),
       };
 
-      // UI: sending state
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner"></span>Sending…';
       msg.textContent = "";
@@ -260,7 +418,7 @@
           body: JSON.stringify(data),
         });
 
-        msg.textContent = "Thanks! We'll get back to you.";
+        msg.textContent = "✓ Message sent — we'll be in touch!";
         msg.className = "success";
         form.reset();
       } catch {
@@ -268,7 +426,7 @@
         msg.className = "error";
       } finally {
         btn.disabled = false;
-        btn.textContent = "Send";
+        btn.textContent = "Send Message";
       }
     });
   </script>
